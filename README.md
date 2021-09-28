@@ -26,6 +26,9 @@ flights
 
 Question 1!
 
+How many flights have a missing dep_time? What other variables are
+missing? What might these rows represent?
+
 ``` r
 flights%>%
   filter(is.na(dep_time))
@@ -54,6 +57,11 @@ air time. These observations most likely represent cancelled flights.
 
 Question 2!
 
+Currently dep_time and sched_dep_time are convenient to look at, but
+hard to compute with because they’re not really continuous numbers.
+Convert them to a more convenient representation of number of minutes
+since midnight.
+
 ``` r
 flights%>%
   mutate(dep_time = (dep_time%/%100)*60 + dep_time%%100,
@@ -80,6 +88,11 @@ flights%>%
     ## #   air_time <dbl>, distance <dbl>, hour <dbl>, minute <dbl>, time_hour <dttm>
 
 Question 3!
+
+Look at the number of canceled flights per day. Is there a pattern? Is
+the proportion of canceled flights related to the average delay? Use
+multiple dplyr operation, all on one line, concluding with
+`ggplot(aes(x=,y=)) + geom_point()`
 
 ``` r
 flights%>%
