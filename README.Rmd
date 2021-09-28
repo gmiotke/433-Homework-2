@@ -1,0 +1,50 @@
+---
+title: "Homework 2"
+author: "Graham Miotke"
+date: "9/27/2021"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(nycflights13)
+```
+
+```{r}
+flights
+```
+
+Question 1!
+
+```{r}
+flights%>%
+  filter(is.na(dep_time))
+```
+
+8,255 flights have a missing departure time. The other missing variables from these flights are departure delay, arrival time, arrival delay & air time. These observations most likely represent cancelled flights. 
+
+Question 2!
+
+```{r}
+flights%>%
+  mutate(dep_time = (dep_time%/%100)*60 + dep_time%%100,
+         sched_dep_time = (sched_dep_time%/%100)*60 + sched_dep_time%%100,
+         arr_time = (arr_time%/%100)*60 + arr_time%%100,
+         sched_arr_time = (sched_arr_time%/%100)*60 + sched_arr_time%%100)
+```
+
+Question 3!
+
+```{r}
+flights%>%
+  group_by(month,day)%>%
+  mutate(cancelled = is.na(dep_time))%>%
+  summarize(avg_delay = mean(dep_delay, na.rm = T),
+            number_flights = n(),
+            number_cancelled = sum(cancelled),
+            proportion = number_cancelled/number_flights)%>%
+  ggplot(aes(x=proportion, y = avg_delay))+geom_point()
+```
+
+It does not seem as if there is a pattern in the number of cancelled flights. Based on the graph, it also seems as if there is not a significant relation between the average delay and the proportion of flights cancelled on that day.
